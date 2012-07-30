@@ -79,7 +79,8 @@ if env =~ /^(development|test)$/
         total_location = json_report_enc.index("% Total")
         coverage_pc = json_report_enc[total_location-3, 3].to_i
 
-        min = (ENV['JSCOVERAGE_MINIMUM'] ||= 80.to_s).to_i
+        conf = (ENV['JSCOVERAGE_MINIMUM'] || ENV['JASMINE_COVERAGE_MINIMUM'])
+        min = (conf || 80.to_s).to_i
         fail "Coverage Fail: Javascript coverage was less than #{min}%. It was #{coverage_pc}%." if coverage_pc < min
       end
 
