@@ -80,8 +80,7 @@ if env =~ /^(development|test)$/
         coverage_pc = json_report_enc[total_location-3, 3].to_i
 
         conf = (ENV['JSCOVERAGE_MINIMUM'] || ENV['JASMINE_COVERAGE_MINIMUM'])
-        min = (conf || 80.to_s).to_i
-        fail "Coverage Fail: Javascript coverage was less than #{min}%. It was #{coverage_pc}%." if coverage_pc < min
+        fail "Coverage Fail: Javascript coverage was less than #{min}%. It was #{coverage_pc}%." if conf && coverage_pc < conf.to_i
       end
 
     end

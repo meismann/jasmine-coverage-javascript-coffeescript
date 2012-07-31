@@ -2,7 +2,7 @@
 
 A transcendent blend of useful JS unit testing and colourful coverage graphs.
 
-This (soon to be) gem allows [Jasmine Headless Webkit](http://johnbintz.github.com/jasmine-headless-webkit/)
+This gem allows [Jasmine Headless Webkit](http://johnbintz.github.com/jasmine-headless-webkit/)
 to be run against a Rails application's Javascript tests, and then produces a coverage report, optionally
 failing it if it falls below a configurable level.
 
@@ -15,10 +15,9 @@ available on your path. The installation steps are on the webpage.
 
 Then, add the following in your Gemfile. Note, there were a raft of small issues with older versions
 of [Jasmine Headless Webkit](http://johnbintz.github.com/jasmine-headless-webkit/), so for the moment you must use
-the master branch of that project. Since jasmine-coverage is not released yet, it must be taken off the master
-branch too.
+the master branch of that project.
 
-    gem 'jasmine-coverage', :git => 'git@github.com:firstbanco/jasmine-coverage.git'
+    gem 'jasmine-coverage'
     gem 'jasmine-headless-webkit', :git => 'git://github.com/johnbintz/jasmine-headless-webkit.git'
 
 # Usage
