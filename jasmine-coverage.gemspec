@@ -8,6 +8,7 @@ Gem::Specification.new do |s|
   s.version = Jasmine::Coverage::VERSION
   s.authors = ['Harry Lascelles']
   s.email = ['harry@harrylascelles.com']
+  s.hompage = 'https://github.com/firstbanco/jasmine-coverage'
   s.summary = 'A blend of JS unit testing and coverage'
 
   s.files = Dir["{lib}/**/*"] + ["README.md"]
