@@ -35,7 +35,7 @@ module Jasmine::Headless
       aFile.close
 
       puts "A copy of the complete page that was used as the test environment can be found here:"
-      puts "#{file}"
+      puts "#{outfile}"
       ret
     end
   end
