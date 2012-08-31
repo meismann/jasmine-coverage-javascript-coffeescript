@@ -10,8 +10,30 @@ module Jasmine::Headless
 
     def write
       ret = old_write
-      file = Jasmine::Coverage.output_dir+"/jscoverage-test-rig.html"
-      FileUtils.cp(all_tests_filename, file)
+      str = File.open(all_tests_filename, "rb").read
+
+      testrigfolder = Jasmine::Coverage.output_dir+"/testrig"
+      FileUtils.mkdir_p testrigfolder
+
+      p "Copying all view files and javascript fixture folders so the JS has access to the html fixtures."
+      FileUtils.copy_entry("#{Jasmine::Coverage.output_dir}/../../spec", "#{testrigfolder}/spec")
+      FileUtils.copy_entry("#{Jasmine::Coverage.output_dir}/../../app", "#{testrigfolder}/app")
+
+      jss = str.scan(/<script type="text\/javascript" src="(.*)"><\/script>/)
+      jss << str.scan(/<link rel="stylesheet" href="(.*)" type="text\/css" \/>/)
+      jss << str.scan(/\.coffee\.js'\] = '(.*)';<\/script>/)
+      jss.flatten!
+      jss.each { |s|
+        js = File.basename(s)
+        str.sub!(s, js)
+        FileUtils.cp(s, testrigfolder)
+      }
+
+      outfile = "#{testrigfolder}/jscoverage-test-rig.html"
+      aFile = File.new(outfile, "w")
+      aFile.write(str)
+      aFile.close
+
       puts "A copy of the complete page that was used as the test environment can be found here:"
       puts "#{file}"
       ret
