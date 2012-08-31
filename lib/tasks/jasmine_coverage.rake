@@ -55,10 +55,12 @@ if env =~ /^(development|test)$/
       errStr = errStr +"2) The sourcecode has a syntax error (which JSLint should find)\n"
       errStr = errStr +"3) The source files are being loaded out of sequence (so global variables are not being declared in order)\n"
       errStr = errStr +"   To check this, run bundle exec jasmine-headless-webkit -l to see the ordering\n"
-      errStr = errStr +"\nIn any case, try running the standard jasmine command to get better errors:\n\nbundle exec jasmine:headless\n\n"
-      errStr = errStr +"\nFinally, try opening the testrig in firefox to see the tests run in a browser and get a stacktrace.\n"
-      errStr = errStr +"\nChrome has strict security settings that make this difficult since it accesses the local filesystem from Javascript (but you can switch the settings off at the command line)\n\n"
-      errStr = errStr +"\ntarget/jscoverage/testrig/jscoverage-test-rig.html\n\n"
+      errStr = errStr +"\nIn any case, try running the standard jasmine command to get better errors:\n\nbundle exec jasmine:headless\n"
+      errStr = errStr +"\nFinally, try opening the testrig in firefox to see the tests run in a browser and get a stacktrace. "
+      errStr = errStr +"Chrome has strict security settings that make this difficult since it accesses the local filesystem from Javascript (but you can switch the settings off at the command line)\n\n"
+      errStr = errStr +"\n**********************************************************************************************\n"
+      errStr = errStr +"\nThe file can be found here: #{Jasmine::Coverage.output_dir}/testrig/jscoverage-test-rig.html\n"
+      errStr = errStr +"\n**********************************************************************************************\n"
       fail errStr if status_code == 1
 
       # Obtain the console log, which includes the coverage report encoded within it
