@@ -15,9 +15,11 @@ module Jasmine::Headless
       testrigfolder = Jasmine::Coverage.output_dir+"/testrig"
       FileUtils.mkdir_p testrigfolder
 
-      p "Copying all view files and javascript fixture folders so the JS has access to the html fixtures."
+      p "Copying all view files and potential javascript fixture folders so the JS has access to the html fixtures."
+      FileUtils.mkdir_p "#{testrigfolder}/target/fixtures"
       FileUtils.copy_entry("#{Jasmine::Coverage.output_dir}/../../spec", "#{testrigfolder}/spec")
       FileUtils.copy_entry("#{Jasmine::Coverage.output_dir}/../../app", "#{testrigfolder}/app")
+      FileUtils.copy_entry("#{Jasmine::Coverage.output_dir}/../fixtures", "#{testrigfolder}/target/fixtures")
 
       jss = str.scan(/<script type="text\/javascript" src="(.*)"><\/script>/)
       jss << str.scan(/<link rel="stylesheet" href="(.*)" type="text\/css" \/>/)
