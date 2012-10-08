@@ -59,6 +59,7 @@ if env =~ /^(development|test)$/
       errStr = errStr +"\nFinally, try opening the testrig in firefox to see the tests run in a browser and get a stacktrace. "
       errStr = errStr +"Chrome has strict security settings that make this difficult since it accesses the local filesystem from Javascript (but you can switch the settings off at the command line)\n\n"
       errStr = errStr +"\n**********************************************************************************************\n"
+      errStr = errStr +"\nThe test rig file needs to load JS directly off disk, which Chrome prevents by default. Your best bet is to open the rig in Firefox.\n"
       errStr = errStr +"\nThe file can be found here: #{Jasmine::Coverage.output_dir}/testrig/jscoverage-test-rig.html\n"
       errStr = errStr +"\n**********************************************************************************************\n"
       fail errStr if status_code == 1
