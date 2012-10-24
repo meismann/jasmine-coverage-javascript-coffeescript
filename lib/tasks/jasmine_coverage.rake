@@ -49,11 +49,12 @@ if env =~ /^(development|test)$/
 
           :reporters => [['File', "#{output_dir}/rawreport.txt"]]
       )
-      errStr = "JSCoverage exited with error code: #{status_code}.\nThis implies one of four things:\n"
+      errStr = "JSCoverage exited with error code: #{status_code}.\nThis implies one of five things:\n"
       errStr = errStr +"0) Your JS files had exactly zero instructions. Are they all blank or just comments?\n"
       errStr = errStr +"1) A test failed (run bundle exec jasmine:headless to see a better error)\n"
       errStr = errStr +"2) The sourcecode has a syntax error (which JSLint should find)\n"
-      errStr = errStr +"3) The source files are being loaded out of sequence (so global variables are not being declared in order)\n"
+      errStr = errStr +"3) An error occurred in a deferred block, eg a setTimeout or underscore _.defer. This caused a window error which Jasmine will never see.\n"
+      errStr = errStr +"4) The source files are being loaded out of sequence (so global variables are not being declared in order)\n"
       errStr = errStr +"   To check this, run bundle exec jasmine-headless-webkit -l to see the ordering\n"
       errStr = errStr +"\nIn any case, try running the standard jasmine command to get better errors:\n\nbundle exec jasmine:headless\n"
       errStr = errStr +"\nFinally, try opening the testrig in firefox to see the tests run in a browser and get a stacktrace. "
