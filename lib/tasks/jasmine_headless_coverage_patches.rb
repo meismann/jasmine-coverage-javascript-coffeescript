@@ -15,7 +15,7 @@ module Jasmine::Headless
       testrigfolder = Jasmine::Coverage.output_dir+"/testrig"
       FileUtils.mkdir_p testrigfolder
 
-      p "Copying all view files and potential javascript fixture folders so the JS has access to the html fixtures."
+      p "\nCopying all view files and potential javascript fixture folders so the JS has access to the html fixtures.\n"
       FileUtils.copy_entry("#{Jasmine::Coverage.output_dir}/../../spec", "#{testrigfolder}/spec")
       FileUtils.copy_entry("#{Jasmine::Coverage.output_dir}/../../app", "#{testrigfolder}/app")
       FileUtils.mkdir_p "#{testrigfolder}/target/fixtures"
@@ -30,6 +30,14 @@ module Jasmine::Headless
       jss.each { |s|
         js = File.basename(s)
         str.sub!(s, js)
+        if File.exists?("#{testrigfolder}/#{js}") && js != 'index.js'
+          s = "\n\n*******************************************************************\n"
+          s = s + "Cannot copy file '#{js}' into jasmine coverage test rig folder.\n"
+          s = s + "There is already another file of that name. You either have two files with the same name (but in different paths)\n"
+          s = s + "or your filename is the same as that from a third party vendor.\n"
+          s = s + "*******************************************************************\n\n"
+          raise s
+        end
         FileUtils.cp(s, testrigfolder)
       }
 
