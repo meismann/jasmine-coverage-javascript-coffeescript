@@ -1,6 +1,6 @@
-<u>/!\</u> This project is still in its Alpha-phase. It works for me, but may not work for you. Please, kindly report any bugs.
+/!\\ This project is still in its Alpha-phase. It works for me, but may not work for you. Please, kindly report any bugs.
 
-# Jasmine Coverage for Javascript and CoffeeScript
+# Test Coverage Visualiser for Javascript and CoffeeScript with Jasmine
 
 A transcendent blend of useful Java-/CoffeeScript unit testing and colourful coverage graphs.
 
@@ -29,7 +29,7 @@ Note, there were a raft of small issues with older versions of [Jasmine Headless
 
 # Usage
 
-To use jasmine-coverage, run the rake task.
+To use jasmine-coverage-javascript-coffeescript, run the rake task.
 
     bundle exec rake jasmine:coverage
 
