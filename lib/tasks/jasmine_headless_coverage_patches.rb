@@ -19,10 +19,8 @@ module Jasmine::Headless
       ret
     end
   end
-end
 
 # Here we patch the resource handler to output the location of our instrumented files
-module Jasmine::Headless
   class FilesList
 
     alias old_to_html :to_html
@@ -75,5 +73,21 @@ module Jasmine::Headless
       @sprockets_environment.append_path(File.dirname(__FILE__))
       @sprockets_environment
     end
+  end
+  
+  class Runner
+    
+    alias old_run :run
+    
+    def run
+      shell_buffer = nil
+      self.class.send :define_method, :system do |command|
+        shell_buffer = %x(#{command})
+      end
+      [old_run, shell_buffer]
+    ensure
+      self.class.send :remove_method, :system
+    end
+    
   end
 end

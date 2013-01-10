@@ -52,14 +52,16 @@ if env =~ /^(development|test)$/
         FileUtils.mv(Dir.glob(instrumented+'/jscoverage*'), Jasmine::CoverageConfig.output_dir)
       end
 
-      puts "\nCoverage will now be run. Expect a large block of compiled coverage data. This will be processed for you into target/jscoverage.\n\n"
-
       # Run Jasmine using the original config.
-      status_code = Jasmine::Headless::Runner.run(
+      status_code, shell_buffer = Jasmine::Headless::Runner.run(
           # Any options from the options.rb file in jasmine-headless-webkit can be used here.
           :reporters => [['File', "#{Jasmine::CoverageConfig.output_dir}/rawreport.txt"]]
       )
-
+      
+      # print buffered output without base64-encoded coverage information
+      puts shell_buffer.gsub(
+        /"ENCODED-COVERAGE-EXPORT-STARTS.*ENCODED-COVERAGE-EXPORT-ENDS|\n"\n|jsDump: "/m, '')
+      
       if status_code == 1
         fail <<-ERR_NOTE
 JSCoverage exited with error code: #{status_code}.
