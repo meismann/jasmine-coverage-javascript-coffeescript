@@ -29,7 +29,7 @@ end
 
 env = ENV['RACK_ENV'] || ENV['RAILS_ENV'] || 'development'
 if env =~ /^(development|test)$/
-  require 'rake'
+  require 'rake' unless Rake.class == Module
   require 'base64'
 
   namespace :jasmine do
