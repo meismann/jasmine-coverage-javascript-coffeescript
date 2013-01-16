@@ -63,10 +63,8 @@ if env =~ /^(development|test)$/
         /"ENCODED-COVERAGE-EXPORT-STARTS.*ENCODED-COVERAGE-EXPORT-ENDS|\n"\n|jsDump: "/m, '')
       
       if status_code == 1
-        fail <<-ERR_NOTE
-JSCoverage exited with error code: #{status_code}.
-
-This implies one of five things:
+        puts <<-ERR_NOTE
+Test execution finished with an error, which implies one of five things:
 
 1) Your JS files had exactly zero instructions. Are they all blank or just comments?
 2) A test failed (open #{Jasmine::CoverageConfig.internal_test_exec_file} with your browser to see which tests are concerned. \
@@ -78,7 +76,7 @@ Javascript (but you can switch the settings off at the command line))
    To check this, run bundle exec jasmine-headless-webkit -l to see the ordering
 
 In any case, try running the standard jasmine-headless-webkit command to get better errors:
-  jasmine-headless-webkit -c
+  rake jasmine:headless
 
         ERR_NOTE
       end
