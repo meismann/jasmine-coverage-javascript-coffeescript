@@ -4,24 +4,24 @@ module Jasmine
   module CoverageConfig
   
     def self.output_dir
-      File.expand_path('coverage/coffee_and_javascript')
+      File.join 'coverage', 'coffee_and_javascript'
     end
   
     def self.instrumented_dir
-      output_dir + '/instrumented/'
+      File.join output_dir, 'instrumented/'
     end
 
     # The reprocessing folder map
     def self.files_map
       {
-        File.expand_path('app/assets/javascripts') => instrumented_dir+'app',
-        File.expand_path('lib/assets/javascripts') => instrumented_dir+'lib',
-        File.expand_path('public/javascripts') => instrumented_dir+'public'
+        File.join('app', 'assets', 'javascripts') => File.join(instrumented_dir, 'app'),
+        File.join('lib', 'assets', 'javascripts') => File.join(instrumented_dir, 'lib'),
+        File.join('public', 'javascripts')        => File.join(instrumented_dir, 'public')
       }
     end
     
     def self.internal_test_exec_file
-      output_dir + '/internal_test_executer.html'
+      File.join output_dir, 'internal_test_executer.html'
     end
   end
 end
@@ -95,7 +95,7 @@ In any case, try running the standard jasmine-headless-webkit command to get bet
       File.open("#{Jasmine::CoverageConfig.output_dir}/jscoverage.json", 'w') { |f| f.write(json_report) }
 
       # Modify the jscoverage.html so it knows it is showing a report, not running a test
-      File.open("#{Jasmine::CoverageConfig.output_dir}/jscoverage.js", 'a') { |f| f.write("\njscoverage_isReport = true;") }
+      File.open(File.join(Jasmine::CoverageConfig.output_dir, 'jscoverage.js'), 'a') { |f| f.write("\njscoverage_isReport = true;") }
 
       if json_report_enc.index("No Javascript was found to test coverage for").nil?
         # Check for coverage failure
@@ -107,22 +107,38 @@ In any case, try running the standard jasmine-headless-webkit command to get bet
       end
 
     end
-
+    
+    def add_pathinfo_to_instrumented_js folder, instrumented_dir, folder_orig = folder
+      Dir.entries(folder).each do |entry|
+        next if entry == '.' || entry == '..'
+        if File.directory?(File.join folder, entry) 
+          add_pathinfo_to_instrumented_js File.join(folder, entry), File.join(instrumented_dir, entry), folder_orig
+        else
+          if entry =~ /\.js$/
+            instrumented_content= File.read(File.join instrumented_dir, entry)
+            instrumented_content.gsub! /_\$jscoverage\['/, "_$jscoverage['#{File.join(folder_orig, '')}"
+            File.write File.join(instrumented_dir, entry), instrumented_content
+          end
+        end
+      end
+    end
+    
     def instrument_js folder, instrumented_dir
-      _instrument folder, instrumented_dir, 'jscoverage', '-v'
+      instrument folder, instrumented_dir, 'jscoverage', '-v'
+      add_pathinfo_to_instrumented_js folder, instrumented_dir
     end
     
     def instrument_cs folder, instrumented_dir
-      _instrument folder, instrumented_dir, 'coffeeCoverage', '--verbose'
+      instrument folder, instrumented_dir, 'coffeeCoverage', '--verbose --path relative'
     end
     
-    def _instrument folder, instrumented_dir, exec, option= ''
+    def instrument folder, instrumented_dir, exec, option= ''
       return unless File.directory? folder
       
       fail '#{exec} executable not found in PATH' if %x(which #{exec}).empty?
-      unless system "#{exec} #{option} #{folder} #{instrumented_dir}"
-        fail "Instrumenting failed. Error message from system: #{$?}"
-      end
+
+      fail "Instrumenting failed. Error message from system: #{$?}" unless
+        system "#{exec} #{option} #{folder} #{instrumented_dir}"
     end
   end
 end
