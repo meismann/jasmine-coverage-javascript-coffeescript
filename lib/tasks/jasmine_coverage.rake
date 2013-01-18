@@ -135,7 +135,7 @@ In any case, try running the standard jasmine-headless-webkit command to get bet
     def instrument folder, instrumented_dir, exec, option= ''
       return unless File.directory? folder
       
-      fail '#{exec} executable not found in PATH' if %x(which #{exec}).empty?
+      fail "#{exec} executable not found in PATH" if %x(which #{exec}).empty?
 
       fail "Instrumenting failed. Error message from system: #{$?}" unless
         system "#{exec} #{option} #{folder} #{instrumented_dir}"
