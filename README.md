@@ -1,4 +1,4 @@
-/!\\ This project is still in its Alpha-phase. It works for me, but may not work for you. Please, kindly report any bugs.
+/!\\ This project is still in its Beta-phase. It works for a whole bunch of happy users, but may not work for you. Please, kindly report any bugs.
 
 # Test Coverage Visualiser for Javascript and CoffeeScript with Jasmine
 
