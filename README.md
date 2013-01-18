@@ -11,7 +11,7 @@ Coverage is provided by the [jscoverage](http://siliconforks.com/jscoverage/manu
 
 Credit goes to First Banco, whose tool [jasmine-coverage](https://github.com/firstbanco/jasmine-coverage) this project is derived from.
 
-# Installation
+## Installation
 
 Firstly, ensure you have a binary of [jscoverage](http://siliconforks.com/jscoverage/manual.html)
 available on your path. The installation steps are on the webpage. On Mac, you may have to install macports first and then do like `sudo port install jscoverage`. Tested to work with Mountain Lion.
@@ -27,7 +27,7 @@ Then, add the following in your Gemfile.
 
 Note, there were a raft of small issues with older versions of [Jasmine Headless Webkit](http://johnbintz.github.com/jasmine-headless-webkit/), so for the moment our project's .gemspec requires at least the current release candidate of that project (>=0.9.0.rc.2).
 
-# Usage
+## Usage
 
 To use jasmine-coverage-javascript-coffeescript, run the rake task.
 
@@ -37,7 +37,7 @@ Optionally, add a failure level percentage.
 
     bundle exec rake jasmine:coverage JASMINE_COVERAGE_MINIMUM=75
 
-# Output
+## Output
 
 You will see the tests execute, then a large blob of text, and finally a summary of the test coverage results.
 An HTML file will also be saved that lets you view the results graphically. Apart from Google Chrome, browsers should be able to open this file from a local disk. This is because the jscoverage generated report page needs to make a request for a local json file, and Chrome won't allow a local file to read another local file off disk.
@@ -48,10 +48,30 @@ Files generated will be
     coverage/coffee_and_javascript/jscoverage.json  -  The report data
     coverage/coffee_and_javascript/internal_test_executer.html  -  The actual page that ran the tests (see for failure/success messages)
 
-# How it works
+## How it works
 
 First JSCoverage and coffeeCoverage are told to run over the directories where typically JavaScript and CoffeeScripts are held (i.e. `app/assets/javascripts`, `lib/assets/javascripts`, and `public/javascripts`), and saves the instrumented files. Next, Jasmine Headless Webkit runs as normal, but a couple of monkey patches intercept the locations of the javascript files it expects to find, rerouting them to the instrumented versions.
 
 The data we get from the coverage can only "leave" the JS sandbox one way: via the console. This is why you see such a large block of Base64 encoded rubbish flying past as the build progresses. The console data is captured by Jasmine Coverage, which decodes it and builds the results HTML page, and gives a short summary in the console.
 
-You're done.
+## Troubleshooting:
+
+**Problem:** ```rake jasmine:coverage``` aborts with announcing that Javascript assets provided by a gem and required in a manifest cannot be found.<br>
+**Solution:** Did you install the gem [jasminrice](https://github.com/bradphelan/jasminerice)? If so, did you follow their installing instructions by executing
+
+    rails g jasminerice:install
+    
+**Problem:** ```rake jasmine:coverage``` aborts with announcing that Javascript assets from within your own app and required in a manifest cannot be found.<br>
+**Solution:** Make sure your ```spec/javascript/support/jasmine.yml``` contains a key ```src_dir```, which lists the directory where the missing asset is located, like so:
+
+    src_dir:
+      - app/assets/javascripts
+      - lib/assets/javascripts
+      - vendor/assets/javascripts
+  
+
+**Problem:** Your specs do not find the code under test.<br>
+**Solution:** If you have previously installed ```jasminerice```, make sure you have followed their installing instructions, which should have created a file ```spec/javascript/spec.js.coffee```. Make sure, it requires the files with the code under test, like so:
+
+    #= require_tree ./ 
+    #= require_tree ../../app/assets/javascripts
