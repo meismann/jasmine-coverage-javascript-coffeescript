@@ -54,7 +54,7 @@ First JSCoverage and coffeeCoverage are told to run over the directories where t
 
 The data we get from the coverage can only "leave" the JS sandbox one way: via the console. This is why you see such a large block of Base64 encoded rubbish flying past as the build progresses. The console data is captured by Jasmine Coverage, which decodes it and builds the results HTML page, and gives a short summary in the console.
 
-## Troubleshooting:
+## Troubleshooting
 
 **Problem:** ```rake jasmine:coverage``` aborts with announcing that Javascript assets provided by a gem and required in a manifest cannot be found.<br>
 **Solution:** Did you install the gem [jasminrice](https://github.com/bradphelan/jasminerice)? If so, did you follow their installing instructions by executing
