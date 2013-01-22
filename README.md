@@ -13,29 +13,41 @@ Credit goes to First Banco, whose tool [jasmine-coverage](https://github.com/fir
 
 ## Installation
 
-Firstly, ensure you have a binary of [jscoverage](http://siliconforks.com/jscoverage/manual.html)
-available on your path. The installation steps are on the webpage. On Mac, you may have to install macports first and then do like `sudo port install jscoverage`. Tested to work with Mountain Lion.
+Firstly, ensure you have a binary of [jscoverage](http://siliconforks.com/jscoverage/manual.html) available on your path. The installation steps are on the webpage. On Mac, you may have to install [macports](http://www.macports.org/install.php) first and then do `sudo port install jscoverage`. Tested to work with Mountain Lion.
 
-Secondly, ensure you have a binary of [coffeeCoverage](https://github.com/benbria/coffee-coverage)
-available on your path. The installation steps are on the page. You may need to install the Node.js Package Manager first (on Mac for example with homebrew: `brew install node`) before you enter the installation process. I recommand to adjust your .bash_profile to add the directory where npm installs binaries to to your PATH; for me this line did the trick:
+Do not forget to run `source ~/.bash_profile` to get the updated $PATH available to your shell, which should now contain a directory where Macports puts executables.  
+
+Secondly, ensure you have a binary of [coffeeCoverage](https://github.com/benbria/coffee-coverage) available on your path. The installation steps are on the page. You may need to install the Node.js Package Manager first (on Mac for example with homebrew: `brew install node`) before you enter the installation process. I recommand to adjust your .bash_profile to add the directory where npm installs binaries to to your PATH; for me this line did the trick:
 
     export PATH=/usr/local/share/npm/bin:$PATH
+    
+Do not forget to run `source ~/.bash_profile` to get the updated $PATH available to your shell, which should now contain a directory where NPM puts executables.  
+
+Thirdly, you need the Qt library in order to later install [Jasmine Headless Webkit](http://johnbintz.github.com/jasmine-headless-webkit/) correctly. On a Mac with homebrew, you would simply do `brew install qt`. You can visit their website to check out how to do install Qt on other operating system.
 
 Then, add the following in your Gemfile.
 
     gem 'jasmine-coverage-javascript-coffeescript'
+    
+Then run
+  
+    bundle install
 
-Note, there were a raft of small issues with older versions of [Jasmine Headless Webkit](http://johnbintz.github.com/jasmine-headless-webkit/), so for the moment our project's .gemspec requires at least the current release candidate of that project (>=0.9.0.rc.2).
+If you had not previously installed Qt, running `bundle install` would not show you any error, however, you could not run the test suite with `rake jasmine:headless`, for this would just as well fail without any error message. Note, there were a raft of small issues with older versions of Jasmine Headless Webkit, so for the moment our project's .gemspec requires at least the current release candidate of that project (>=0.9.0.rc.2).
 
 ## Usage
 
-To use jasmine-coverage-javascript-coffeescript, run the rake task.
+To use jasmine-coverage-javascript-coffeescript, run the rake task (may work without `bundle exec` depending on your Gem collection environment):
 
     bundle exec rake jasmine:coverage
 
 Optionally, add a failure level percentage.
 
     bundle exec rake jasmine:coverage JASMINE_COVERAGE_MINIMUM=75
+    
+If you were not previously using Jasmine Headless Webkit already, it may be of interest that you can now run your whole test suite without a browser, simply on the command line, with:
+
+    bundle rake jasmine:headless
 
 ## Output
 
@@ -56,13 +68,13 @@ The data we get from the coverage can only "leave" the JS sandbox one way: via t
 
 ## Troubleshooting:
 
-**Problem:** ```rake jasmine:coverage``` aborts with announcing that Javascript assets provided by a gem and required in a manifest cannot be found.<br>
+**Problem:** `rake jasmine:coverage` aborts with announcing that Javascript assets provided by a gem and required in a manifest cannot be found.<br>
 **Solution:** Did you install the gem [jasminrice](https://github.com/bradphelan/jasminerice)? If so, did you follow their installing instructions by executing
 
     rails g jasminerice:install
     
-**Problem:** ```rake jasmine:coverage``` aborts with announcing that Javascript assets from within your own app and required in a manifest cannot be found.<br>
-**Solution:** Make sure your ```spec/javascript/support/jasmine.yml``` contains a key ```src_dir```, which lists the directory where the missing asset is located, like so:
+**Problem:** `rake jasmine:coverage` aborts with announcing that Javascript assets from within your own app and required in a manifest cannot be found.<br>
+**Solution:** Make sure your `spec/javascript/support/jasmine.yml` contains a key `src_dir`, which lists the directory where the missing asset is located, like so:
 
     src_dir:
       - app/assets/javascripts
@@ -71,7 +83,7 @@ The data we get from the coverage can only "leave" the JS sandbox one way: via t
   
 
 **Problem:** Your specs do not find the code under test.<br>
-**Solution:** If you have previously installed ```jasminerice```, make sure you have followed their installing instructions, which should have created a file ```spec/javascript/spec.js.coffee```. Make sure, it requires the files with the code under test, like so:
+**Solution:** If you have previously installed `jasminerice`, make sure you have followed their installing instructions, which should have created a file `spec/javascript/spec.js.coffee`. Make sure, it requires the files with the code under test, like so:
 
     #= require_tree ./ 
     #= require_tree ../../app/assets/javascripts
