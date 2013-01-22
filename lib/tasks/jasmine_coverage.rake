@@ -109,6 +109,7 @@ In any case, try running the standard jasmine-headless-webkit command to get bet
     end
     
     def add_pathinfo_to_instrumented_js folder, instrumented_dir, folder_orig = folder
+      return unless File.exists? folder
       Dir.entries(folder).each do |entry|
         next if entry == '.' || entry == '..'
         if File.directory?(File.join folder, entry) 
