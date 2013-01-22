@@ -1,4 +1,4 @@
-/!\\ This project is still in its Alpha-phase. It works for me, but may not work for you. Please, kindly report any bugs.
+/!\\ This project is still in its Beta-phase. It works for a whole bunch of happy users, but may not work for you. Please, kindly report any bugs.
 
 # Test Coverage Visualiser for Javascript and CoffeeScript with Jasmine
 
@@ -66,7 +66,7 @@ First JSCoverage and coffeeCoverage are told to run over the directories where t
 
 The data we get from the coverage can only "leave" the JS sandbox one way: via the console. This is why you see such a large block of Base64 encoded rubbish flying past as the build progresses. The console data is captured by Jasmine Coverage, which decodes it and builds the results HTML page, and gives a short summary in the console.
 
-## Troubleshooting:
+## Troubleshooting
 
 **Problem:** `rake jasmine:coverage` aborts with announcing that Javascript assets provided by a gem and required in a manifest cannot be found.<br>
 **Solution:** Did you install the gem [jasminrice](https://github.com/bradphelan/jasminerice)? If so, did you follow their installing instructions by executing
