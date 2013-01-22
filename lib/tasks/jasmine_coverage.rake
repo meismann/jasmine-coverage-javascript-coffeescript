@@ -58,6 +58,15 @@ if env =~ /^(development|test)$/
           :reporters => [['File', "#{Jasmine::CoverageConfig.output_dir}/rawreport.txt"]]
       )
       
+      if shell_buffer.nil?
+      fail <<-ERR_NOTE
+      
+Jasmine::Headless::Runner.run returned nil. Are you sure you had installed Qt before you bundle-installed jasmine-headless-webkit? \
+Check the README for more information: https://github.com/meismann/jasmine-coverage-javascript-coffeescript 
+      
+        ERR_NOTE
+      end
+      
       # print buffered output without base64-encoded coverage information
       puts shell_buffer.gsub(
         /"ENCODED-COVERAGE-EXPORT-STARTS.*ENCODED-COVERAGE-EXPORT-ENDS|\n"\n|jsDump: "/m, '')
