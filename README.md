@@ -45,9 +45,9 @@ Optionally, add a failure level percentage.
 
     bundle exec rake jasmine:coverage JASMINE_COVERAGE_MINIMUM=75
     
-If you were not previously using Jasmine Headless Webkit already, it may be of interest that you can now run your whole test suite without a browser, simply on the command line, with:
+If you have not been previously using Jasmine Headless Webkit already, it may be of interest that you can now run your whole test suite without a browser, simply on the command line, with:
 
-    bundle rake jasmine:headless
+    bundle exec rake jasmine:headless
 
 ## Output
 
