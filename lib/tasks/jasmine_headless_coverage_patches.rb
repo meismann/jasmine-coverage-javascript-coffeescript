@@ -13,7 +13,7 @@ module Jasmine::Headless
       # Make a dump of the file that was used for non-browser test execution
       File.delete(Jasmine::CoverageConfig.internal_test_exec_file) if File.exists? Jasmine::CoverageConfig.internal_test_exec_file
       FileUtils.cp all_tests_filename, Jasmine::CoverageConfig.internal_test_exec_file
-      puts "A copy of the complete page that was used as the test environment can be found here (for off-browser testing):"
+      puts "A copy of the complete page that was used as the test environment can be found here (and viewed in browser):"
       puts Jasmine::CoverageConfig.internal_test_exec_file
 
       ret
