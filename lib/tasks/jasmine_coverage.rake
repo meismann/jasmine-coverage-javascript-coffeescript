@@ -1,5 +1,3 @@
-require 'pp'
-
 module Jasmine
   module CoverageConfig
   
@@ -37,8 +35,8 @@ if env =~ /^(development|test)$/
     task :coverage do
 
       require 'jasmine-headless-webkit'
-      # Instill our patches for jasmine-headless to work
-      require_relative 'jasmine_headless_coverage_patches'
+      # Install our patches for jasmine-headless-webkit to work
+      require_relative 'jasmine_headless_webkit_patches'
 
       # Preprocess the JS files to add instrumentation
       FileUtils.rm_rf Jasmine::CoverageConfig.output_dir

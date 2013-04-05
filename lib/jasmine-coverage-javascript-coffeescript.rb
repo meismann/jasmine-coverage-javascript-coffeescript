@@ -1,3 +1,7 @@
-require_relative 'jasmine-coverage-javascript-coffeescript/version'
+require_relative 'jcjc/version'
 
-load 'tasks/jasmine_coverage.rake'
+class JasmineCoverageJavaScriptCoffeeScriptRailtie < Rails::Railtie
+  rake_tasks do
+    Dir[File.join(File.dirname(__FILE__),'tasks/*.rake')].each { |f| load f }
+  end
+end
